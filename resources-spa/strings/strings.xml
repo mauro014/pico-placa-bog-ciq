@@ -1,0 +1,19 @@
+<strings>
+    <string id="AppName">Pico y Placa</string>
+    <string id="plateDigitTitle">Último dígito de la placa</string>
+    <string id="oddDaysLowTitle">Días impares circulan placas 1–5</string>
+    <string id="languageTitle">Idioma</string>
+    <string id="langAuto">Automático (idioma del reloj)</string>
+    <string id="langEng">English</string>
+    <string id="langSpa">Español</string>
+    <string id="d0">0</string>
+    <string id="d1">1</string>
+    <string id="d2">2</string>
+    <string id="d3">3</string>
+    <string id="d4">4</string>
+    <string id="d5">5</string>
+    <string id="d6">6</string>
+    <string id="d7">7</string>
+    <string id="d8">8</string>
+    <string id="d9">9</string>
+</strings>

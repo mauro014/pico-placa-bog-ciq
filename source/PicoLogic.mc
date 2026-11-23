@@ -1,6 +1,7 @@
 import Toybox.Application;
 import Toybox.Graphics;
 import Toybox.Lang;
+import Toybox.System;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
 
@@ -26,7 +27,7 @@ module PicoLogic {
         if (v instanceof Number && v >= 0 && v <= 9) {
             return v;
         }
-        return 7;
+        return 3;
     }
 
     function oddDaysLow() as Boolean {
@@ -35,6 +36,24 @@ module PicoLogic {
             return v;
         }
         return true;
+    }
+
+    // 0 = automático (idioma del reloj), 1 = English, 2 = Español.
+    function language() as Number {
+        var v = Properties.getValue("language");
+        if (v instanceof Number && v >= 0 && v <= 2) {
+            return v;
+        }
+        return 0;
+    }
+
+    // true si la app debe mostrarse en español.
+    function isEs() as Boolean {
+        var l = language();
+        if (l == 0) {
+            return System.getDeviceSettings().systemLanguage == System.LANGUAGE_SPA;
+        }
+        return l == 2;
     }
 
     // ---------------------------------------------------------------- fechas
@@ -122,11 +141,11 @@ module PicoLogic {
     // ---------------------------------------------------------------- textos
 
     // Motivo por el que no aplica la medida ("" si es día hábil).
-    function reason(st as Number) as String {
+    function reason(st as Number, es as Boolean) as String {
         if (st == FESTIVO) {
-            return "festivo";
+            return es ? "festivo" : "holiday";
         } else if (st == FINDE) {
-            return "fin de semana";
+            return es ? "fin de semana" : "weekend";
         }
         return "";
     }

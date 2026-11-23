@@ -1,7 +1,11 @@
 <strings>
     <string id="AppName">Pico y Placa</string>
-    <string id="plateDigitTitle">Último dígito de la placa</string>
-    <string id="oddDaysLowTitle">Días impares circulan placas 1–5</string>
+    <string id="plateDigitTitle">Last digit of the plate</string>
+    <string id="oddDaysLowTitle">Odd days: plates 1–5 can drive</string>
+    <string id="languageTitle">Language</string>
+    <string id="langAuto">Auto (watch language)</string>
+    <string id="langEng">English</string>
+    <string id="langSpa">Español</string>
     <string id="d0">0</string>
     <string id="d1">1</string>
     <string id="d2">2</string>

@@ -10,7 +10,7 @@ class PicoPlacaApp extends Application.AppBase {
     }
 
     function getInitialView() as [WatchUi.Views] or [WatchUi.Views, WatchUi.InputDelegates] {
-        return [new PicoView()];
+        return [new PicoView(), new PicoDelegate()];
     }
 
     function getGlanceView() as [WatchUi.GlanceView] or [WatchUi.GlanceView, WatchUi.GlanceViewDelegate] or Null {

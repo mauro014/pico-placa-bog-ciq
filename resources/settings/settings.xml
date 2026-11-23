@@ -16,4 +16,11 @@
     <setting propertyKey="@Properties.oddDaysLow" title="@Strings.oddDaysLowTitle">
         <settingConfig type="boolean" />
     </setting>
+    <setting propertyKey="@Properties.language" title="@Strings.languageTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.langAuto</listEntry>
+            <listEntry value="1">@Strings.langEng</listEntry>
+            <listEntry value="2">@Strings.langSpa</listEntry>
+        </settingConfig>
+    </setting>
 </settings>

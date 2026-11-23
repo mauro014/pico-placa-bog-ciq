@@ -25,6 +25,7 @@ Widget Connect IQ que muestra de un vistazo si tu carro tiene pico y placa **hoy
 | `source/PicoLogic.mc` | Fechas (days_from_civil), Pascua, festivos y regla (`(:glance)`) |
 | `source/PicoGlanceView.mc` | Vista glance |
 | `source/PicoView.mc` | Vista completa |
+| `source/PicoMenu.mc` | Menú de ajustes en el reloj (START): placa, rotación, idioma |
 | `resources/settings/` | Ajustes editables desde Garmin Connect |
 | `tools/validate.py` | Misma lógica en Python, con pruebas de 2025–2027 |
 
@@ -73,6 +74,27 @@ Edit Application.Properties data*. Para probar otras fechas usa *Settings → Ti
 > Las apps instaladas por USB (*sideload*) no aparecen en la tienda Connect IQ. Para que los
 > ajustes salgan en el celular, ver la nota de abajo.
 
+## Cambiar la placa desde el reloj
+
+Abre la vista completa y presiona **START** (o toca la pantalla) para entrar a **Ajustes**:
+
+- **Placa** → elige el último dígito (0–9). Úsalo si cambias de carro.
+- **Rotación** → interruptor "Impares: 1–5 · Pares: 6–0". Cámbialo si la Secretaría de Movilidad
+  invierte la rotación.
+
+- **Idioma / Language** → Automático (sigue el idioma del reloj), English o Español.
+
+Los cambios se guardan en el reloj y funcionan aunque la app esté instalada por USB.
+
+## Idiomas
+
+La app está en **inglés y español**. Por defecto sigue el idioma del reloj (español si el reloj está
+en español; inglés en cualquier otro caso). Desde el menú se puede forzar uno.
+
+- Textos de la app (glance, vista completa, menú): en el código, con la forma `es ? "…" : "…"`.
+- Textos de los ajustes de Garmin Connect: `resources/strings/strings.xml` (inglés, por defecto) y
+  `resources-spa/strings/strings.xml` (español).
+
 ## Cambiar la placa desde Garmin Connect
 
 En la app **Garmin Connect** del celular: *Dispositivos → Forerunner 965 → Actividades, apps y más →
@@ -85,8 +107,8 @@ Glances / Widgets → Pico y Placa → Ajustes*.
 El reloj aplica el cambio de inmediato (`onSettingsChanged`).
 
 Nota: Garmin Connect solo muestra ajustes de apps instaladas desde la tienda Connect IQ (o
-subidas como beta privada). Con una instalación por USB, los valores por defecto están en
-`resources/settings/properties.xml` (placa 3). Puedes cambiarlos ahí y recompilar.
+subidas como beta privada). Con una instalación por USB, usa el menú del reloj. Los valores por
+defecto (placa 3) están en `resources/settings/properties.xml`.
 
 ## Versión 2 (pendiente)
 
