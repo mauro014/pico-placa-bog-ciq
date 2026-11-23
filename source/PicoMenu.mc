@@ -1,12 +1,11 @@
 import Toybox.Application;
 import Toybox.Lang;
+import Toybox.Time;
+import Toybox.Time.Gregorian;
 import Toybox.WatchUi;
 
-// Menú de ajustes en el reloj (START en la vista completa).
-// Las clases llevan (:glance) solo porque PicoPlacaApp (cargada siempre en modo
-// glance) las referencia a través de getInitialView; nunca se instancian en el glance.
+// Menú de ajustes en el reloj (START en la vista completa). Solo primer plano.
 
-(:glance)
 module PicoMenu {
 
     function endsIn(digit as Number, es as Boolean) as String {
@@ -22,6 +21,17 @@ module PicoMenu {
         return es ? "Automático" : "Auto";
     }
 
+    // "Actualizado 23/11" / "Updated 11/23" / "Nunca" / "Never".
+    function syncLabel(es as Boolean) as String {
+        var ok = Storage.getValue("syncOk");
+        if (!(ok instanceof Number)) {
+            return es ? "Nunca" : "Never";
+        }
+        var info = Gregorian.info(new Time.Moment(ok), Time.FORMAT_SHORT);
+        return es ? "Actualizado " + info.day + "/" + info.month
+                  : "Updated " + info.month + "/" + info.day;
+    }
+
     function open() as Void {
         var es = PicoLogic.isEs();
         var menu = new WatchUi.Menu2({:title => es ? "Ajustes" : "Settings"});
@@ -33,12 +43,13 @@ module PicoMenu {
             :oddLow, PicoLogic.oddDaysLow(), null));
         menu.addItem(new WatchUi.MenuItem(es ? "Idioma" : "Language",
             languageName(PicoLogic.language(), es), :lang, null));
+        menu.addItem(new WatchUi.MenuItem(es ? "Excepciones" : "Exceptions",
+            syncLabel(es), :sync, null));
         WatchUi.pushView(menu, new PicoSettingsDelegate(), WatchUi.SLIDE_LEFT);
     }
 }
 
 // Delegado de la vista completa: START / toque / MENU abren los ajustes.
-(:glance)
 class PicoDelegate extends WatchUi.BehaviorDelegate {
 
     function initialize() {
@@ -57,7 +68,6 @@ class PicoDelegate extends WatchUi.BehaviorDelegate {
 }
 
 // Menú principal de ajustes.
-(:glance)
 class PicoSettingsDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {
@@ -77,6 +87,11 @@ class PicoSettingsDelegate extends WatchUi.Menu2InputDelegate {
             }
             menu.setFocus(PicoLogic.plateDigit());
             WatchUi.pushView(menu, new PicoDigitDelegate(item), WatchUi.SLIDE_LEFT);
+        } else if (id == :sync) {
+            // Forzar descarga ahora (necesita el celular conectado)
+            PicoSync.schedule(true);
+            item.setSubLabel(es ? "Descargando…" : "Downloading…");
+            WatchUi.requestUpdate();
         } else if (id == :lang) {
             var menu = new WatchUi.Menu2({:title => es ? "Idioma" : "Language"});
             for (var l = 0; l <= 2; l++) {
@@ -89,7 +104,6 @@ class PicoSettingsDelegate extends WatchUi.Menu2InputDelegate {
 }
 
 // Lista de dígitos 0–9.
-(:glance)
 class PicoDigitDelegate extends WatchUi.Menu2InputDelegate {
 
     private var _parent as WatchUi.MenuItem;
@@ -108,7 +122,6 @@ class PicoDigitDelegate extends WatchUi.Menu2InputDelegate {
 }
 
 // Lista de idiomas: al elegir, vuelve a la vista completa ya traducida.
-(:glance)
 class PicoLanguageDelegate extends WatchUi.Menu2InputDelegate {
 
     function initialize() {

@@ -2,9 +2,7 @@ import Toybox.Graphics;
 import Toybox.Lang;
 import Toybox.WatchUi;
 
-// Vista completa. Lleva (:glance) solo porque la clase App (que siempre se carga
-// en modo glance) la referencia en getInitialView; nunca se instancia en el glance.
-(:glance)
+// Vista completa (solo primer plano; no se carga en el glance ni en segundo plano).
 class PicoView extends WatchUi.View {
 
     function initialize() {
@@ -16,6 +14,11 @@ class PicoView extends WatchUi.View {
             ? ["lun", "mar", "mié", "jue", "vie", "sáb", "dom"]
             : ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
         return (names as Array<String>)[PicoLogic.weekday(days)];
+    }
+
+    // Inicial del día para la fila de próximos días (X = miércoles en español).
+    private function inicial(days as Number, es as Boolean) as String {
+        return (es ? "LMXJVSD" : "MTWTFSS").substring(PicoLogic.weekday(days), PicoLogic.weekday(days) + 1) as String;
     }
 
     private function fecha(days as Number, es as Boolean) as String {
@@ -72,7 +75,9 @@ class PicoView extends WatchUi.View {
             detalle = (es ? "Pico y placa " : "Restricted ") + corto;
         } else {
             corto = es ? "Sin pico y placa" : "No restriction";
-            if (st == PicoLogic.FESTIVO) {
+            if (st == PicoLogic.LEVANTADA) {
+                detalle = es ? "Medida levantada hoy" : "Restriction lifted today";
+            } else if (st == PicoLogic.FESTIVO) {
                 detalle = es ? "Festivo: sin pico y placa" : "Holiday: no restriction";
             } else if (st == PicoLogic.FINDE) {
                 detalle = es ? "Fin de semana: sin pico y placa" : "Weekend: no restriction";
@@ -114,7 +119,7 @@ class PicoView extends WatchUi.View {
             }
             var x = x0 + i * paso;
             dc.setColor(PicoLogic.COLOR_GRIS, Graphics.COLOR_TRANSPARENT);
-            dc.drawText(x, h * 79 / 100, Graphics.FONT_XTINY, dia(d, es), center);
+            dc.drawText(x, h * 79 / 100, Graphics.FONT_XTINY, inicial(d, es), center);
             dc.setColor(colorFor(sd), Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(x, h * 86 / 100, dr);
             dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_TRANSPARENT);

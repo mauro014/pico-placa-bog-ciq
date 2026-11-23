@@ -7,7 +7,8 @@ import Toybox.Time.Gregorian;
 
 // Lógica de Pico y Placa (Bogotá, particulares). Misma lógica que tools/validate.py.
 // Toda la aritmética de fechas usa enteros: días desde 1970-01-01.
-(:glance)
+// (:background) porque el servicio que descarga las excepciones usa daysFromCivil/today.
+(:glance, :background)
 module PicoLogic {
 
     // Estados de un día
@@ -15,6 +16,7 @@ module PicoLogic {
     const PICO = 1;      // día hábil, la placa tiene pico y placa
     const FINDE = 2;     // sábado o domingo
     const FESTIVO = 3;   // festivo en Colombia
+    const LEVANTADA = 4; // excepción: la Alcaldía levantó la medida ese día
 
     const COLOR_PICO = 0xD9483B;   // rojo ladrillo: no salgas
     const COLOR_LIBRE = 0x3FA66B;  // verde sobrio: puedes salir
@@ -138,11 +140,33 @@ module PicoLogic {
         return p == -3 || p == -2 || p == 43 || p == 64 || p == 71;
     }
 
+    // ---------------------------------------------------------------- excepciones (v2)
+
+    // Excepciones descargadas por PicoService: {días desde 1970 => máscara de dígitos
+    // con restricción}. Máscara 0 = medida levantada. Se cachea; resetCache() al cambiar.
+    var _exc as Dictionary<Number, Number>? = null;
+    var _excLoaded as Boolean = false;
+
+    function exceptions() as Dictionary<Number, Number>? {
+        if (!_excLoaded) {
+            var v = Storage.getValue("exc");
+            _exc = (v instanceof Dictionary) ? v as Dictionary<Number, Number> : null;
+            _excLoaded = true;
+        }
+        return _exc;
+    }
+
+    function resetCache() as Void {
+        _excLoaded = false;
+    }
+
     // ---------------------------------------------------------------- textos
 
     // Motivo por el que no aplica la medida ("" si es día hábil).
     function reason(st as Number, es as Boolean) as String {
-        if (st == FESTIVO) {
+        if (st == LEVANTADA) {
+            return es ? "medida levantada" : "lifted";
+        } else if (st == FESTIVO) {
             return es ? "festivo" : "holiday";
         } else if (st == FINDE) {
             return es ? "fin de semana" : "weekend";
@@ -159,7 +183,18 @@ module PicoLogic {
     // ---------------------------------------------------------------- regla
 
     // Estado del día `days` para la placa terminada en `digit`.
+    // Las excepciones tienen prioridad sobre todo (incluso fines de semana y festivos).
     function status(days as Number, digit as Number, oddLow as Boolean) as Number {
+        var exc = exceptions();
+        if (exc != null) {
+            var mask = exc.get(days);
+            if (mask instanceof Number) {
+                if (((mask >> digit) & 1) == 1) {
+                    return PICO;
+                }
+                return (mask == 0) ? LEVANTADA : LIBRE;
+            }
+        }
         if (weekday(days) >= 5) {
             return FINDE;
         }
