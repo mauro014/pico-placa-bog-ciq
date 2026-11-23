@@ -2,7 +2,7 @@
 
 Widget Connect IQ que muestra de un vistazo si tu carro tiene pico y placa **hoy** en Bogotá.
 
-- **Glance** (lista de glances del reloj): `Placa 7` + qué hacer hoy:
+- **Glance** (lista de glances del reloj): `Placa 3` + qué hacer hoy:
   - **NO SALGAS 6am–9pm** (rojo): tu placa tiene pico y placa hoy.
   - **PUEDES SALIR** (verde): hoy no tienes pico y placa. Si es fin de semana o festivo, lo indica.
 - **Vista completa** (al abrir el glance): círculo grande con el estado de hoy, horario,
@@ -86,7 +86,7 @@ El reloj aplica el cambio de inmediato (`onSettingsChanged`).
 
 Nota: Garmin Connect solo muestra ajustes de apps instaladas desde la tienda Connect IQ (o
 subidas como beta privada). Con una instalación por USB, los valores por defecto están en
-`resources/settings/properties.xml` (placa 7). Puedes cambiarlos ahí y recompilar.
+`resources/settings/properties.xml` (placa 3). Puedes cambiarlos ahí y recompilar.
 
 ## Versión 2 (pendiente)
 

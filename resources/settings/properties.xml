@@ -1,4 +1,4 @@
 <properties>
-    <property id="plateDigit" type="number">7</property>
+    <property id="plateDigit" type="number">3</property>
     <property id="oddDaysLow" type="boolean">true</property>
 </properties>
