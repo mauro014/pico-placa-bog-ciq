@@ -1,0 +1,19 @@
+<settings>
+    <setting propertyKey="@Properties.plateDigit" title="@Strings.plateDigitTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.d0</listEntry>
+            <listEntry value="1">@Strings.d1</listEntry>
+            <listEntry value="2">@Strings.d2</listEntry>
+            <listEntry value="3">@Strings.d3</listEntry>
+            <listEntry value="4">@Strings.d4</listEntry>
+            <listEntry value="5">@Strings.d5</listEntry>
+            <listEntry value="6">@Strings.d6</listEntry>
+            <listEntry value="7">@Strings.d7</listEntry>
+            <listEntry value="8">@Strings.d8</listEntry>
+            <listEntry value="9">@Strings.d9</listEntry>
+        </settingConfig>
+    </setting>
+    <setting propertyKey="@Properties.oddDaysLow" title="@Strings.oddDaysLowTitle">
+        <settingConfig type="boolean" />
+    </setting>
+</settings>

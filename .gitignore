@@ -1,0 +1,13 @@
+# Llave de desarrollador: NUNCA subir a git
+developer_key
+developer_key.*
+*.der
+*.pem
+# Salidas de compilación
+bin/
+gen/
+mir/
+*.prg
+*.prg.debug.xml
+*.iq
+__pycache__/

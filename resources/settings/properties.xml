@@ -1,0 +1,4 @@
+<properties>
+    <property id="plateDigit" type="number">7</property>
+    <property id="oddDaysLow" type="boolean">true</property>
+</properties>
