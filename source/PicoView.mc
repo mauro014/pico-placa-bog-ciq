@@ -110,6 +110,7 @@ class PicoView extends WatchUi.View {
         var x0 = cx - paso * (n - 1) / 2;
         var dr = h * 45 / 1000;
         var d = hoy + 1;
+        var prev = d;
         for (var i = 0; i < n; i++) {
             d += 1;
             var sd = PicoLogic.status(d, digit, oddLow);
@@ -119,6 +120,11 @@ class PicoView extends WatchUi.View {
             }
             var x = x0 + i * paso;
             dc.setColor(PicoLogic.COLOR_GRIS, Graphics.COLOR_TRANSPARENT);
+            // Línea vertical al cambiar de semana (el día de la semana "retrocede")
+            if (i > 0 && PicoLogic.weekday(d) < PicoLogic.weekday(prev)) {
+                dc.fillRectangle(x - paso / 2 - 1, h * 76 / 100, 2, h * 13 / 100);
+            }
+            prev = d;
             dc.drawText(x, h * 79 / 100, Graphics.FONT_XTINY, inicial(d, es), center);
             dc.setColor(colorFor(sd), Graphics.COLOR_TRANSPARENT);
             dc.fillCircle(x, h * 86 / 100, dr);
